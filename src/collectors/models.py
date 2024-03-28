@@ -1,8 +1,6 @@
-"""
-Описание моделей данных (DTO).
-"""
 
 from pydantic import Field, BaseModel
+from datetime import datetime
 
 
 class HashableBaseModel(BaseModel):
@@ -92,6 +90,9 @@ class CountryDTO(BaseModel):
             subregion="Northern Europe",
             timezones=[
                 "UTC+02:00",
+            square=50453.1,
+            geographical_latitude=45.23
+            geographical_longitude=15.35
             ],
         )
     """
@@ -106,6 +107,9 @@ class CountryDTO(BaseModel):
     population: int
     subregion: str
     timezones: list[str]
+    square: float | None
+    geographical_latitude: float | None
+    geographical_longitude: float | None
 
 
 class CurrencyRatesDTO(BaseModel):
@@ -143,11 +147,36 @@ class WeatherInfoDTO(BaseModel):
         )
     """
 
+    offset_seconds: int
+    timezone: int
     temp: float
     pressure: int
     humidity: int
     wind_speed: float
     description: str
+    visibility: int
+
+
+class NewsInfoDTO(BaseModel):
+    """
+    Модель данных новостей.
+    .. code-block::
+        NewsDTO(
+            source="CNN",
+            title="The latest news about the coronavirus pandemic",
+            description="The latest news about the coronavirus pandemic",
+            url="https://www.cnn.com/world/live-news/coronavirus-pandemic-09-14-21-intl/index.html",
+            published_at="2021-09-14T20:00:00Z",
+            content="The latest news about the coronavirus pandemic"
+        )
+    """
+
+    source: str
+    title: str
+    description: str
+    url: str
+    published_at: datetime
+    content: str
 
 
 class LocationInfoDTO(BaseModel):
@@ -201,3 +230,4 @@ class LocationInfoDTO(BaseModel):
     location: CountryDTO
     weather: WeatherInfoDTO
     currency_rates: dict[str, float]
+    news: list[NewsInfoDTO] | None
